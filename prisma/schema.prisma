@@ -15,26 +15,16 @@ datasource db {
 }
 
 model Comment {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    commenter User     @relation(fields: [userId], references: [id])
-    userId    String
-    content   String
-    upvotes   Int      @default(0)
-    replies   Reply[]
-}
-
-model Reply {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    userId    String
-    upvotes   Int      @default(0)
-    content   String
-    commenter User     @relation(fields: [userId], references: [id])
-    Comment   Comment  @relation(fields: [commentId], references: [id])
-    commentId String
+    id           String    @id @default(cuid())
+    createdAt    DateTime  @default(now())
+    updatedAt    DateTime  @updatedAt
+    commenter    User      @relation(fields: [userId], references: [id])
+    userId       String
+    content      String
+    upvotes      Int       @default(0)
+    replies      Comment[] @relation("replies")
+    replyingTo   Comment?  @relation("replies", fields: [replyingToId], references: [id])
+    replyingToId String?   @map("commentId")
 }
 
 // Necessary for Next auth
@@ -73,7 +63,6 @@ model User {
     accounts      Account[]
     sessions      Session[]
     Comment       Comment[]
-    Reply         Reply[]
 }
 
 model VerificationToken {

@@ -20,4 +20,17 @@ export default defineNextConfig({
     locales: ["en"],
     defaultLocale: "en",
   },
+  experimental: {
+    swcPlugins: [
+      [
+        "next-superjson-plugin",
+        {
+          excluded: [],
+        },
+      ],
+    ],
+  },
+  images: {
+    domains: ["cdn.discordapp.com"],
+  },
 });
